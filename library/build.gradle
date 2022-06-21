@@ -1,5 +1,5 @@
 apply from: rootProject.file('gradle/library.gradle')
-apply from: rootProject.file('gradle/mavenCentral-publish.gradle')
+//apply from: rootProject.file('gradle/mavenCentral-publish.gradle')
 
 configurations { natives }
 
@@ -44,7 +44,12 @@ dependencies {
     // LibGdx-Ashley(ECS)
     implementation "com.badlogicgames.ashley:ashley:$ashleyVersion"
 
+
     implementation 'androidx.core:core-ktx:1.6.0'
+
+
+
+
 }
 
 // called every time gradle gets executed, takes the native dependencies of

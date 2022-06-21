@@ -27,6 +27,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.View
+import java.lang.ref.WeakReference
 
 /**
  * 用于显示弹幕的 UI View，与 DanmakuPlayer 绑定并联合实现弹幕的具体展现逻辑。
@@ -41,7 +42,7 @@ class DanmakuView : View {
     defStyleAttr
   )
 
-  var danmakuPlayer: DanmakuPlayer? = null
+  var danmakuPlayer: WeakReference<DanmakuPlayer>? = null
   internal val displayer: ViewDisplayer = ViewDisplayer()
 
   init {
@@ -57,17 +58,17 @@ class DanmakuView : View {
     val height = measuredHeight
     // 部分机型存在长按时大小为零的问题（Flyme）
     if (width == 0 || height == 0) return
-    danmakuPlayer?.notifyDisplayerSizeChanged(width, height)
-    danmakuPlayer?.draw(canvas)
+    danmakuPlayer?.get()?.notifyDisplayerSizeChanged(width, height)
+    danmakuPlayer?.get()?.draw(canvas)
   }
 
   override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-    danmakuPlayer?.notifyDisplayerSizeChanged(w, h)
+    danmakuPlayer?.get()?.notifyDisplayerSizeChanged(w, h)
   }
 
   override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
     super.onLayout(changed, left, top, right, bottom)
-    danmakuPlayer?.notifyDisplayerSizeChanged(right - left, bottom - top)
+    danmakuPlayer?.get()?.notifyDisplayerSizeChanged(right - left, bottom - top)
   }
 
   class ViewDisplayer : DanmakuDisplayer {
